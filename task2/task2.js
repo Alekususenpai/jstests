@@ -1,68 +1,3 @@
-/**
-
-Да се направи функција која како параметри ќе прима низа од објекти (RESOURCES) и тип на ресурс ("campaign" или "order") и како резултат ќе врати објект кој ќе ги следи следните правила:
-    1. Да се исфилтрира низата така што ќе останат само ресурсите кои припаѓаат на зададениот тип.
-    2. Од новата низа да се состави објект од објекти такашто:
-        - key-то на секој објект ќе биде претставено преку името на регионот
-        - value-то на секој објект ќе биде низа составена од објекти кои ги претставуваат ресурсите кои припаѓаат на истиот регион,
-        такашто овие објекти ќе бидат составени од следните полиња:
-            - "id"
-            - "name"
-            - "order_id" или "campaign_id" (во зависност од типот на ресурс кој е примен како параметар) претставувајќи го нумеричкиот дел превземен од "code" полето од оригиналната низа на објекти
-            - "country" кодот (e.g. "mk") превземено од "code" полето од оригиналната низа на објекти, претставено со големи букви
-            - "startDate"
-            - "endDate"
- 
- Пример очекуван output доколку типот на ресурси е "campaign":
- {
-  eu: [
-    {
-        id: 1,
-        name: 'Resource #1',
-        campaign_id: '1111',
-        country: 'UK',
-        startDate: '20220101',
-        endDate: '20220101'
-    },
-    {
-        id: 4,
-        name: 'Resource #4',
-        campaign_id: '4444',
-        country: 'ES',
-        startDate: '20220101',
-        endDate: '20220101'
-    },
-    {
-        id: 6,
-        name: 'Resource #6',
-        campaign_id: '1111',
-        country: 'MK',
-        startDate: '20220101',
-        endDate: '20220101'
-    },
-    {
-        id: 8,
-        name: 'Resource #8',
-        campaign_id: '8888',
-        country: 'MK',
-        startDate: '20220101',
-        endDate: '20220101'
-    }
-  ],
-  latam: [
-    {
-        id: 11,
-        name: "Resource #11",
-        campaign_id: '2332',
-        country: 'MX',
-        startDate: "20220110",
-        endDate: "20220111",
-    }
-  ],
-  ...
- }
- */
-
 const RESOURCES = [
   {
     id: 1,
@@ -164,3 +99,98 @@ const RESOURCES = [
     code: "mx_2332"
   }
 ];
+
+/*
+Да се направи функција која како параметри ќе прима низа од објекти (RESOURCES) и тип на ресурс ("campaign" или "order") и како резултат ќе врати објект кој ќе ги следи следните правила:
+    1. Да се исфилтрира низата така што ќе останат само ресурсите кои припаѓаат на зададениот тип.
+    2. Од новата низа да се состави објект од објекти такашто:
+        - key-то на секој објект ќе биде претставено преку името на регионот
+        - value-то на секој објект ќе биде низа составена од објекти кои ги претставуваат ресурсите кои припаѓаат на истиот регион,
+        такашто овие објекти ќе бидат составени од следните полиња:
+            - "id"
+            - "name"
+            - "order_id" или "campaign_id" (во зависност од типот на ресурс кој е примен како параметар) претставувајќи го нумеричкиот дел превземен од "code" полето од оригиналната низа на објекти
+            - "country" кодот (e.g. "mk") превземено од "code" полето од оригиналната низа на објекти, претставено со големи букви
+            - "startDate"
+            - "endDate" */
+
+function sorter(arrOfObj, resType) {
+  const obj = {};
+  const result = arrOfObj.filter(obj => obj.type === resType);
+  const eu = result.filter(obj => obj.region === 'eu');
+  const na = result.filter(obj => obj.region === 'na');
+  const apac = result.filter(obj => obj.region === 'apac');
+  const latam = result.filter(obj => obj.region === 'latam');
+
+  result.forEach(res => {
+    let cody = res.code.replace(/^\D+/g, '');
+    let country = res.code.replace(/[^a-zA-Z]+/g, '');
+    if (obj.type === 'campaign') { res.campaign_id = cody }
+    else { res.order_id = cody }
+    res.country = country.toUpperCase();
+    delete res.type;
+    delete res.region;
+    delete res.code;
+  })
+
+  obj.eu = eu;
+  obj.na = na;
+  obj.apac = apac;
+  obj.latam = latam;
+  console.log(obj)
+  return obj;
+}
+
+sorter(RESOURCES, 'campaign');
+
+
+/*Пример очекуван output доколку типот на ресурси е "campaign":
+{
+ eu: [
+   {
+       id: 1,
+       name: 'Resource #1',
+       campaign_id: '1111',
+       country: 'UK',
+       startDate: '20220101',
+       endDate: '20220101'
+   },
+   {
+       id: 4,
+       name: 'Resource #4',
+       campaign_id: '4444',
+       country: 'ES',
+       startDate: '20220101',
+       endDate: '20220101'
+   },
+   {
+       id: 6,
+       name: 'Resource #6',
+       campaign_id: '1111',
+       country: 'MK',
+       startDate: '20220101',
+       endDate: '20220101'
+   },
+   {
+       id: 8,
+       name: 'Resource #8',
+       campaign_id: '8888',
+       country: 'MK',
+       startDate: '20220101',
+       endDate: '20220101'
+   }
+ ],
+ latam: [
+   {
+       id: 11,
+       name: "Resource #11",
+       campaign_id: '2332',
+       country: 'MX',
+       startDate: "20220110",
+       endDate: "20220111",
+   }
+ ],
+ ...
+}
+*/
+

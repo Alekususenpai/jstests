@@ -25,5 +25,5 @@ function combinator(n, arr) {
   } console.log(arr);
 }
 
-
 combinator(-2, nums)
+
