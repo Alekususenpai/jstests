@@ -15,7 +15,13 @@ export default function ContentContainer({
     <div>
       <h1>ToDos</h1>
       {todos.length > 0 ? (
-        <div>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+          }}
+        >
           {value === ""
             ? todos
                 .filter((todo) =>
@@ -23,10 +29,28 @@ export default function ContentContainer({
                 )
                 .map((todo) => {
                   return (
-                    <div key={todo.id} onClick={() => viewDetails(todo.id)}>
-                      <div onClick={(e) => e.stopPropagation()}>
-                        <FaTimes onClick={() => deleteTodo(todo.id)} />
-                        <FaRegCircle onClick={() => toggleTodo(todo.id)} />
+                    <div
+                      className="todo-div"
+                      key={todo.id}
+                      onClick={() => viewDetails(todo.id)}
+                    >
+                      <div
+                        className="todo-div-btn"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <FaTimes
+                          className="todo-btn"
+                          onClick={() => deleteTodo(todo.id)}
+                        />
+                        <FaRegCircle
+                          style={
+                            !todo.completed
+                              ? { color: "red" }
+                              : { color: "green" }
+                          }
+                          className="todo-btn"
+                          onClick={() => toggleTodo(todo.id)}
+                        />
                       </div>
                       <p>ToDo title: {todo.title}</p>
                       <p>Completed: {todo.completed ? "Yes" : "No"}</p>
@@ -35,10 +59,28 @@ export default function ContentContainer({
                 })
             : searchFilteredTodos.map((todo) => {
                 return (
-                  <div key={todo.id} onClick={() => viewDetails(todo.id)}>
-                    <div onClick={(e) => e.stopPropagation()}>
-                      <FaTimes onClick={() => deleteTodo(todo.id)} />
-                      <FaRegCircle onClick={() => toggleTodo(todo.id)} />
+                  <div
+                    className="todo-div"
+                    key={todo.id}
+                    onClick={() => viewDetails(todo.id)}
+                  >
+                    <div
+                      className="todo-div-btn"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <FaTimes
+                        className="todo-btn"
+                        onClick={() => deleteTodo(todo.id)}
+                      />
+                      <FaRegCircle
+                        style={
+                          !todo.completed
+                            ? { color: "red" }
+                            : { color: "green" }
+                        }
+                        className="todo-btn"
+                        onClick={() => toggleTodo(todo.id)}
+                      />
                     </div>
                     <p>ToDo title: {todo.title}</p>
                     <p>Completed: {todo.completed ? "Yes" : "No"}</p>
@@ -47,7 +89,9 @@ export default function ContentContainer({
               })}
         </div>
       ) : (
-        "No todos, please reload the page to fetch new todos"
+        <p style={{ fontWeight: "bold" }}>
+          No todos left, please reload the page to fetch new todos!
+        </p>
       )}
     </div>
   );

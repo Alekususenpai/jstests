@@ -3,6 +3,7 @@ import ContentContainer from "./components/ContentContainer";
 import Dropdown from "./components/Dropdown";
 import SearchBar from "./components/SearchBar";
 import User from "./components/User";
+import './App.css'
 
 function App() {
   const [todos, setTodos] = useState([]);
@@ -68,20 +69,20 @@ function App() {
 
     <main>
 
-      {(!show) ?
-
-        <div>
-          <SearchBar onSearchChange={(e) => onSearchChange(e)} />
-          <Dropdown handleValue={handleValue} />
-
-          <ContentContainer value={value} searchFilteredTodos={searchFilteredTodos}
-            todos={todos}
-            searchField={searchField}
-            viewDetails={viewDetails}
-            deleteTodo={deleteTodo}
-            toggleTodo={toggleTodo} />
-
-        </div> : <User userId={userId} hide={() => hide()} />}
+      <div className="main-container">
+        {(!show) ?
+          <div>
+            <SearchBar onSearchChange={(e) => onSearchChange(e)} placeholder={'Search a ToDo'} />
+            <Dropdown handleValue={handleValue} />
+            <ContentContainer value={value} searchFilteredTodos={searchFilteredTodos}
+              todos={todos}
+              searchField={searchField}
+              viewDetails={viewDetails}
+              deleteTodo={deleteTodo}
+              toggleTodo={toggleTodo} />
+          </div>
+          : <User userId={userId} hide={() => hide()} />}
+      </div>
 
     </main >
   )
