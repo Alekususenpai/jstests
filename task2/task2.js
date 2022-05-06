@@ -123,11 +123,9 @@ function sorter(arrOfObj, resType) {
   const latam = result.filter(obj => obj.region === 'latam');
 
   result.forEach(res => {
-    let cody = res.code.replace(/^\D+/g, '');
-    let country = res.code.replace(/[^a-zA-Z]+/g, '');
-    if (obj.type === 'campaign') { res.campaign_id = cody }
-    else { res.order_id = cody }
-    res.country = country.toUpperCase();
+    let divRes = res.code.split('_');
+    res.country = divRes[0].toUpperCase();
+    res[`${resType}_id`] = divRes[1];
     delete res.type;
     delete res.region;
     delete res.code;
@@ -137,7 +135,7 @@ function sorter(arrOfObj, resType) {
   obj.na = na;
   obj.apac = apac;
   obj.latam = latam;
-  console.log(obj)
+  console.log(obj);
   return obj;
 }
 
