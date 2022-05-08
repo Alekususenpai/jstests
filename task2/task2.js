@@ -118,9 +118,6 @@ function sorter(arrOfObj, resType) {
   const obj = {};
   const result = arrOfObj.filter(obj => obj.type === resType);
   const eu = result.filter(obj => obj.region === 'eu');
-  const na = result.filter(obj => obj.region === 'na');
-  const apac = result.filter(obj => obj.region === 'apac');
-  const latam = result.filter(obj => obj.region === 'latam');
 
   result.forEach(res => {
     let divRes = res.code.split('_');
