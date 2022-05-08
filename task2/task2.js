@@ -115,9 +115,15 @@ const RESOURCES = [
             - "endDate" */
 
 function sorter(arrOfObj, resType) {
-  const obj = {};
+
   const result = arrOfObj.filter(obj => obj.type === resType);
-  const eu = result.filter(obj => obj.region === 'eu');
+  const regions = result.map(obj => obj.region);
+  const uniq = [...new Set(regions)];
+  const obj = {};
+
+  uniq.map(region => {
+    obj[region] = result.filter(res => res.region === region);
+  });
 
   result.forEach(res => {
     let divRes = res.code.split('_');
@@ -128,15 +134,14 @@ function sorter(arrOfObj, resType) {
     delete res.code;
   })
 
-  obj.eu = eu;
-  obj.na = na;
-  obj.apac = apac;
-  obj.latam = latam;
-  console.log(obj);
+  console.log(obj)
   return obj;
+
 }
 
+
 sorter(RESOURCES, 'campaign');
+
 
 
 /*Пример очекуван output доколку типот на ресурси е "campaign":
