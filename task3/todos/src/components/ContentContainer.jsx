@@ -1,15 +1,13 @@
 import React from "react";
-import { FaTimes } from "react-icons/fa";
-import { FaRegCircle } from "react-icons/fa";
+import Todo from "./Todo";
 
 export default function ContentContainer({
-  value,
   todos,
-  searchFilteredTodos,
+  filteredTodos,
   searchField,
-  viewDetails,
   deleteTodo,
   toggleTodo,
+  viewDetails,
 }) {
   return (
     <div>
@@ -22,71 +20,18 @@ export default function ContentContainer({
             justifyContent: "space-between",
           }}
         >
-          {value === ""
-            ? todos
-                .filter((todo) =>
-                  todo.title.includes(searchField.toLowerCase())
-                )
-                .map((todo) => {
-                  return (
-                    <div
-                      className="todo-div"
-                      key={todo.id}
-                      onClick={() => viewDetails(todo.id)}
-                    >
-                      <div
-                        className="todo-div-btn"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <FaTimes
-                          className="todo-btn"
-                          onClick={() => deleteTodo(todo.id)}
-                        />
-                        <FaRegCircle
-                          style={
-                            !todo.completed
-                              ? { color: "red" }
-                              : { color: "green" }
-                          }
-                          className="todo-btn"
-                          onClick={() => toggleTodo(todo.id)}
-                        />
-                      </div>
-                      <p>ToDo title: {todo.title}</p>
-                      <p>Completed: {todo.completed ? "Yes" : "No"}</p>
-                    </div>
-                  );
-                })
-            : searchFilteredTodos.map((todo) => {
-                return (
-                  <div
-                    className="todo-div"
-                    key={todo.id}
-                    onClick={() => viewDetails(todo.id)}
-                  >
-                    <div
-                      className="todo-div-btn"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <FaTimes
-                        className="todo-btn"
-                        onClick={() => deleteTodo(todo.id)}
-                      />
-                      <FaRegCircle
-                        style={
-                          !todo.completed
-                            ? { color: "red" }
-                            : { color: "green" }
-                        }
-                        className="todo-btn"
-                        onClick={() => toggleTodo(todo.id)}
-                      />
-                    </div>
-                    <p>ToDo title: {todo.title}</p>
-                    <p>Completed: {todo.completed ? "Yes" : "No"}</p>
-                  </div>
-                );
-              })}
+          {filteredTodos
+            .filter((todo) => todo.title.includes(searchField.toLowerCase()))
+            .map((todo) => {
+              return (
+                <Todo
+                  todo={todo}
+                  deleteTodo={deleteTodo}
+                  toggleTodo={toggleTodo}
+                  viewDetails={viewDetails}
+                />
+              );
+            })}
         </div>
       ) : (
         <p style={{ fontWeight: "bold" }}>

@@ -1,27 +1,29 @@
 import { useState, useEffect } from "react";
 import { FaRunning } from "react-icons/fa";
 
-export default function User({ userId, hide }) {
+export default function User({ userId }) {
   const [userDetails, setuserDetails] = useState([]);
 
   useEffect(() => {
     fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
       .then((response) => response.json())
       .then((result) => setuserDetails(result));
-    return () => {};
-  });
+    return () => {
+      return;
+    };
+  }, [userId]);
 
   const data = Object.values(userDetails);
 
   return (
-    <div className="user-div">
+    <div style={{ padding: "1.5em", marginLeft: "15%" }}>
       {Object.keys(data).length === 0 ? (
         <p style={{ fontWeight: "bolder" }}>
           User was in a hurry and forgot to leave personal info!{" "}
           <FaRunning style={{ fontSize: "2em" }} />
         </p>
       ) : (
-        <div style={{ margin: "2em" }} key={userDetails.id}>
+        <div key={userDetails.id}>
           <h2>User details:</h2>
           <div
             style={{
@@ -56,12 +58,11 @@ export default function User({ userId, hide }) {
       <button
         style={{
           padding: "0.3em 1.7em",
-          margin: "2em",
+          margin: "2em 0",
           borderRadius: "0.5em",
           backgroundColor: "black",
           color: "wheat",
         }}
-        onClick={hide}
       >
         Back
       </button>
