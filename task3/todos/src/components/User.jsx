@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
 import { FaRunning } from "react-icons/fa";
+import { useParams, useNavigate } from "react-router-dom";
 
-export default function User({ userId }) {
+export default function User() {
   const [userDetails, setuserDetails] = useState([]);
 
+  const params = useParams();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+    fetch(`https://jsonplaceholder.typicode.com/users/${params.id}`)
       .then((response) => response.json())
       .then((result) => setuserDetails(result));
     return () => {
       return;
     };
-  }, [userId]);
+  });
 
   const data = Object.values(userDetails);
 
@@ -23,7 +27,7 @@ export default function User({ userId }) {
           <FaRunning style={{ fontSize: "2em" }} />
         </p>
       ) : (
-        <div key={userDetails.id}>
+        <div>
           <h2>User details:</h2>
           <div
             style={{
@@ -45,7 +49,7 @@ export default function User({ userId }) {
           <span>Address: </span>
           {data.map((info) => {
             return (
-              <p style={{ display: "inline" }} key={info.zipcode}>
+              <p style={{ display: "inline" }}>
                 {info.street} {info.city}
               </p>
             );
@@ -56,12 +60,16 @@ export default function User({ userId }) {
         </div>
       )}
       <button
+        onClick={() => {
+          navigate(-1);
+        }}
         style={{
           padding: "0.3em 1.7em",
           margin: "2em 0",
           borderRadius: "0.5em",
           backgroundColor: "black",
           color: "wheat",
+          cursor: "pointer",
         }}
       >
         Back

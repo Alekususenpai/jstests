@@ -4,7 +4,7 @@ import ContentContainer from "../components/ContentContainer";
 import Dropdown from "../components/Dropdown";
 import SearchBar from "../components/SearchBar";
 
-export default function Homepage({ viewDetails }) {
+export default function Homepage() {
   const [todos, setTodos] = useState([]);
   const [filteredTodos, setfilteredTodos] = useState(todos);
   const [value, setvalue] = useState("all");
@@ -14,6 +14,7 @@ export default function Homepage({ viewDetails }) {
     fetch("https://jsonplaceholder.typicode.com/todos")
       .then((response) => response.json())
       .then((result) => setTodos(result));
+    console.log("rerendered");
     return () => {
       return;
     };
@@ -84,7 +85,6 @@ export default function Homepage({ viewDetails }) {
           searchField={searchField}
           deleteTodo={deleteTodo}
           toggleTodo={toggleTodo}
-          viewDetails={viewDetails}
         />
       </div>
     </div>

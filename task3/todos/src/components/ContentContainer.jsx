@@ -7,7 +7,6 @@ export default function ContentContainer({
   searchField,
   deleteTodo,
   toggleTodo,
-  viewDetails,
 }) {
   return (
     <div>
@@ -25,10 +24,10 @@ export default function ContentContainer({
             .map((todo) => {
               return (
                 <Todo
+                  key={todo.id}
                   todo={todo}
                   deleteTodo={deleteTodo}
                   toggleTodo={toggleTodo}
-                  viewDetails={viewDetails}
                 />
               );
             })}
