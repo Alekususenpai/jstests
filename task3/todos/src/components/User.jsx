@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { FaRunning } from "react-icons/fa";
 import { useParams, useNavigate } from "react-router-dom";
+import { FaTimes } from "react-icons/fa";
+import { FaRegCircle } from "react-icons/fa";
 
 export default function User() {
   const [userDetails, setuserDetails] = useState([]);
+  const [todos, setTodos] = useState([]);
 
   const params = useParams();
   const navigate = useNavigate();
@@ -17,10 +20,33 @@ export default function User() {
     };
   });
 
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/todos")
+      .then((response) => response.json())
+      .then((result) => setTodos(result));
+    return () => {
+      return;
+    };
+  }, []);
+
+  const deleteTodo = (id) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
+    console.log("deleted", id);
+  };
+
+  const toggleTodo = (id) => {
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+    console.log("toggled", id);
+  };
   const data = Object.values(userDetails);
+  const id = parseInt(params.id);
 
   return (
-    <div style={{ padding: "1.5em", marginLeft: "15%" }}>
+    <div style={{ padding: "1.5em", width: "70%", margin: "0 auto" }}>
       {Object.keys(data).length === 0 ? (
         <p style={{ fontWeight: "bolder" }}>
           User was in a hurry and forgot to leave personal info!{" "}
@@ -59,6 +85,7 @@ export default function User() {
           </p>
         </div>
       )}
+
       <button
         onClick={() => {
           navigate(-1);
@@ -74,6 +101,48 @@ export default function User() {
       >
         Back
       </button>
+
+      <h3
+        style={{
+          margin: "2em 0",
+        }}
+      >
+        User related todos:
+      </h3>
+
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-evenly",
+        }}
+      >
+        {todos
+          .filter((todo) => todo.userId === id)
+          .map((todo) => {
+            return (
+              <div className="todo-div" key={todo.id}>
+                <div className="todo-div-btn">
+                  <FaTimes
+                    className="todo-btn"
+                    onClick={() => deleteTodo(todo.id)}
+                  />
+                  <FaRegCircle
+                    style={
+                      !todo.completed ? { color: "red" } : { color: "green" }
+                    }
+                    className="todo-btn"
+                    onClick={() => toggleTodo(todo.id)}
+                  />
+                </div>
+                <p>UserId: {todo.userId}</p>
+                <p>ToDo n. {todo.id}</p>
+                <p>ToDo title: {todo.title}</p>
+                <p>Completed: {todo.completed ? "Yes" : "No"}</p>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }

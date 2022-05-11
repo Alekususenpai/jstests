@@ -3,10 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import UserInfo from './routes/UserInfo';
 import Homepage from './routes/Homepage';
 
-
-
 export default function App() {
-
 
   return (
     <main>
